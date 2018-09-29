@@ -1,19 +1,13 @@
 package com.coolweather.android;
 
-import androidx.appcompat.app.AppCompatActivity;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Response;
-
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -26,9 +20,18 @@ import com.coolweather.android.gson.Weather;
 import com.coolweather.android.util.HttpUtil;
 import com.coolweather.android.util.Utility;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+//import android.support.v4.widget.SwipeRefreshLayout;
+
+
 
 public class WeatherActivity extends AppCompatActivity {
 private ScrollView weatherLayout;
@@ -43,7 +46,10 @@ private TextView comfortText;
 private TextView carwashText;
 private TextView sportText;
 private ImageView bingpicImg;
-
+public SwipeRefreshLayout swipeRefreshLayout;
+private Button refresh_weather_btn;
+public DrawerLayout drawerLayout;
+private Button nav_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,7 @@ private ImageView bingpicImg;
         }
 
         setContentView(R.layout.activity_weather);
+
 
         weatherLayout=findViewById(R.id.weather_layout);
         titleCity=findViewById(R.id.title_city);
@@ -70,16 +77,37 @@ private ImageView bingpicImg;
         sportText=findViewById(R.id.sport_text);
         SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString =preferences.getString("weather",null);
-        if(weatherString!=null && false)//此处确保每次可以重新请求天气数据
+
+
+        final String weatherId;
+        if(weatherString!=null )//此处确保每次可以重新请求天气数据
         {
             Weather weather= Utility.handleWeatherResponse(weatherString);
+            weatherId=weather.basic.weatherId;
             ShowWeatherInfo(weather);
         }
         else {
-            String weatherId = getIntent().getStringExtra("weather_id");
+            weatherId = getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(weatherId);
         }
+        swipeRefreshLayout=findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestWeather(weatherId);
+            }
+        });
+
+        drawerLayout=findViewById(R.id.drawer_layout);
+        nav_btn=findViewById(R.id.nav_btn);
+        nav_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
 
         bingpicImg=findViewById(R.id.bing_pic_img);
         String bingPic=preferences.getString("bing_pic",null);
@@ -117,7 +145,7 @@ private ImageView bingpicImg;
         });
     }
 
-    private void requestWeather(final String weatherId) {
+    public void requestWeather(final String weatherId) {
         String weatherUrl = "http://guolin.tech/api/weather?cityid="+weatherId+"&key=f9e001f5c0804882baf719898c0c9493";
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
@@ -127,6 +155,7 @@ private ImageView bingpicImg;
                     @Override
                     public void run() {
                         Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
             }
@@ -150,6 +179,7 @@ private ImageView bingpicImg;
                         Toast.makeText(WeatherActivity.this,"获取天气信息失败",Toast.LENGTH_SHORT).show();
 
                     }
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             });
             }
