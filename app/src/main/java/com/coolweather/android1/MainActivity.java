@@ -1,11 +1,8 @@
-package com.coolweather.android;
+package com.coolweather.android1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,4 +20,11 @@ public class MainActivity extends AppCompatActivity {
 
         }*/
     }
+
+    public String testextract()
+    {
+        String something = "something";
+        return something;
+    }
+
 }

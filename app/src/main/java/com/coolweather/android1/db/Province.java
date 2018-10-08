@@ -1,4 +1,4 @@
-package com.coolweather.android.db;
+package com.coolweather.android1.db;
 
 import org.litepal.crud.DataSupport;
 

@@ -1,4 +1,4 @@
-package com.coolweather.android.gson;
+package com.coolweather.android1.gson;
 
 import com.google.gson.annotations.SerializedName;
 

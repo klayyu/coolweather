@@ -1,13 +1,12 @@
-package com.coolweather.android.util;
+package com.coolweather.android1.util;
 
 import android.text.TextUtils;
 
-import com.coolweather.android.db.City;
-import com.coolweather.android.db.Country;
-import com.coolweather.android.db.Province;
-import com.coolweather.android.gson.Weather;
+import com.coolweather.android1.db.City;
+import com.coolweather.android1.db.Country;
+import com.coolweather.android1.db.Province;
+import com.coolweather.android1.gson.Weather;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.coolweather.android;
+package com.coolweather.android1;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,12 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.coolweather.android.gson.Forecast;
-import com.coolweather.android.gson.Weather;
-import com.coolweather.android.service.AutoUpdateService;
-import com.coolweather.android.util.ConstantData;
-import com.coolweather.android.util.HttpUtil;
-import com.coolweather.android.util.Utility;
+import com.coolweather.android1.gson.Forecast;
+import com.coolweather.android1.gson.Weather;
+import com.coolweather.android1.service.AutoUpdateService;
+import com.coolweather.android1.util.ConstantData;
+import com.coolweather.android1.util.HttpUtil;
+import com.coolweather.android1.util.Utility;
 
 import java.io.IOException;
 
@@ -101,6 +101,7 @@ private Button nav_btn;
             public void onRefresh() {
                 requestWeather(weatherId);
             }
+
         });
 
         drawerLayout=findViewById(R.id.drawer_layout);

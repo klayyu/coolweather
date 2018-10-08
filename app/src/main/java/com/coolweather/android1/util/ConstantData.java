@@ -1,4 +1,4 @@
-package com.coolweather.android.util;
+package com.coolweather.android1.util;
 
 public class ConstantData {
     private static final String weatherKEy="f9e001f5c0804882baf719898c0c9493";
